@@ -11,12 +11,19 @@ spec:
         app: teamcity
         tier: web
     spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: teamcity-disk
       containers:
         - name: teamcity
           image: jetbrains/teamcity-server
           imagePullPolicy: Always
           ports:
             - containerPort: 8111
+          volumeMounts:
+            - name: data
+              mountPath: /data/teamcity_server/datadir
 ---
 apiVersion: v1
 kind: Service
@@ -73,6 +80,10 @@ spec:
         app: teamcity-db
         tier: web
     spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: teamcity-db-disk
       containers:
         - name: teamcity-db
           env:
@@ -86,6 +97,9 @@ spec:
               value: teamcity
           image: mysql:8.0
           imagePullPolicy: Always
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql
 ---
 apiVersion: v1
 kind: Service
@@ -101,3 +115,27 @@ spec:
   ports:
     - port: 3306
       targetPort: 3306
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: teamcity-disk
+spec:
+  # storageClassName: ssd
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: teamcity-db-disk
+spec:
+  # storageClassName: ssd
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
