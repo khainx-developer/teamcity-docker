@@ -1,0 +1,39 @@
+version: '3.5'
+
+networks:
+  teamcity-network:
+    name: teamcity-network
+    driver: bridge
+
+services:
+  teamcity.mysql:
+    image: mysql:8.0
+    container_name: teamcity-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_PASSWORD=password
+      - MYSQL_USER=teamcity
+      - MYSQL_DATABASE=teamcity
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci
+    ports:
+      - 13306:3306
+    networks:
+      - teamcity-network
+
+  teamcity:
+    image: jetbrains/teamcity-server
+    container_name: teamcity
+    ports:
+      - 18111:8111
+    networks:
+      - teamcity-network
+
+  teamcity-agent:
+    privileged: true
+    image: khainx127/docker-compose-teamcity-agent
+    container_name: teamcity-agent
+    environment:
+      - SERVER_URL=http://teamcity:8111
+      - DOCKER_IN_DOCKER=start
+    networks:
+      - teamcity-network
