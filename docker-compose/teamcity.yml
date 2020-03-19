@@ -30,7 +30,7 @@ services:
 
   teamcity-agent:
     privileged: true
-    image: khainx127/docker-compose-teamcity-agent
+    image: khainx127/gcloud-teamcity-agent
     container_name: teamcity-agent
     environment:
       - SERVER_URL=http://teamcity:8111
