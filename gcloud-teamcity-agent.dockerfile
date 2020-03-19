@@ -19,5 +19,12 @@ RUN echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /
 RUN apt-get update
 RUN apt-get install -y kubectl
 
+RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+RUN apt install -y nodejs
+RUN node --version
+RUN npm --version
+
 RUN echo "\nauto_authorize=true" >> /opt/buildagent/conf_dist/buildAgent.dist.properties
+RUN echo "\nautoManage=true" >> /opt/buildagent/conf_dist/buildAgent.dist.properties
+RUN echo "\nautoAuthorize=true" >> /opt/buildagent/conf_dist/buildAgent.dist.properties
 # RUN cat /opt/buildagent/conf_dist/buildAgent.dist.properties
