@@ -63,6 +63,8 @@ spec:
               value: http://teamcity:8111
             - name: DOCKER_IN_DOCKER
               value: start
+            - name: AGENT_NAME
+              value: agent
           image: khainx127/gcloud-teamcity-agent
           imagePullPolicy: Always
 ---

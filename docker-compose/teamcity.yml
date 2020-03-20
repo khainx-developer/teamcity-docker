@@ -35,5 +35,6 @@ services:
     environment:
       - SERVER_URL=http://teamcity:8111
       - DOCKER_IN_DOCKER=start
+      - AGENT_NAME=agent
     networks:
       - teamcity-network
