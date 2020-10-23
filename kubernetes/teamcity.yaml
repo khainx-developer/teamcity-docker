@@ -17,7 +17,7 @@ spec:
             claimName: teamcity-disk
       containers:
         - name: teamcity
-          image: jetbrains/teamcity-server
+          image: jetbrains/teamcity-server:2020.1.4
           imagePullPolicy: Always
           ports:
             - containerPort: 8111
@@ -65,7 +65,7 @@ spec:
               value: start
             - name: AGENT_NAME
               value: agent
-          image: khainx127/gcloud-teamcity-agent
+          image: khainx127/teamcity-agent
           imagePullPolicy: Always
 ---
 apiVersion: apps/v1beta1
